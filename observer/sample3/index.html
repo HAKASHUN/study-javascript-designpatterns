@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script src="pubsub.js"></script>
+<script>
+    var subscriber = pubsub.subscribe('newDataAvailable', gridUpdate);
+
+    function getCurrentTime() {
+        var date = new Date();
+        var m = date.getMonth();
+        var d = date.getDate();
+        var y = date.getFullYear();
+        var t = date.toLocaleString().toLowerCase();
+
+        return (m + "/" + d + "/" + y + "/" + t);
+    }
+
+    function addGridRow(data) {
+        console.log('updated grid component with:' + data);
+    }
+    function updateCounter(data) {
+        console.log("data last updated at: " + getCurrentTime() + " with " + data);
+    }
+
+    function gridUpdate(topic, data) {
+        if(data !== "undefined") {
+            addGridRow(data);
+            updateCounter(data);
+        }
+    }
+
+    pubsub.publish('newDataAvailable', {
+        summary: "Apple made $5 billion",
+        identifier: "APPL",
+        stokePrice: 570.91
+    })
+
+
+</script>
+</body>
+</html>

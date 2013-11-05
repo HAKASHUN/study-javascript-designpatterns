@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script id="userTemplate" type="text/html">
+    <li><%= name %></li>
+</script>
+<script id="ratingsTemplate" type="text/html">
+    <li><strong><%= title %></strong> was rated <%= rating %>/5</li>
+</script>
+
+<div id="container">
+    <div class="sampleForm">
+        <p>
+            <label for="twitter_handle">Twitter handle:</label>
+            <input type="text" id="twitter_handle">
+        </p>
+        <p>
+            <label for="movie_seen">Name a movie you've seen this year:</label>
+            <input type="text" id="movie_seen">
+        </p>
+        <p>
+            <label for="movie_rating">Rate the movie you saw:</label>
+            <select id="movie_rating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </p>
+        <p>
+            <button id="add">Submit rating</button>
+        </p>
+    </div>
+    <div class="summaryTable">
+        <div id="users"><h3>Recent users</h3></div>
+        <div id="ratings"><h3>Recent movies rated</h3></div>
+    </div>
+</div>
+
+
+<script src="../../bower_components/jquery/jquery.js"></script>
+<script src="../../bower_components/underscore/underscore.js"></script>
+<script>
+
+    /* jQuery Tiny Pub/Sub - v0.7 - 10/27/2011
+     * http://benalman.com/
+     * https://gist.github.com/cowboy/661855
+     * Copyright (c) 2011 "Cowboy" Ben Alman; Licensed MIT, GPL */
+
+    (function($) {
+
+        var o = $({});
+
+        $.subscribe = function() {
+            o.on.apply(o, arguments);
+        };
+
+        $.unsubscribe = function() {
+            o.off.apply(o, arguments);
+        };
+
+        $.publish = function() {
+            o.trigger.apply(o, arguments);
+        };
+
+    }(jQuery));
+
+    //Here we go!
+    (function($){
+        $.subscribe('/new/user', function(e, data) {
+            var compiledTemplate;
+            if(data) {
+                compiledTemplate = _.template($('#userTemplate').html());
+                $('#users').append(compiledTemplate(data));
+            }
+        });
+        $.subscribe('/new/rating', function(e, data) {
+            var compiledTemplate;
+            if(data) {
+                compiledTemplate = _.template($('#ratingsTemplate').html());
+                $('#ratings').append(compiledTemplate(data));
+            }
+        });
+
+        $('#add').on('click', function(e) {
+            e.preventDefault();
+
+            var strUser = $('#twitter_handle').val();
+            var strMovie = $('#movie_seen').val();
+            var strRating = $('#movie_rating').val();
+
+            $.publish('/new/user', { name: strUser });
+            $.publish('/new/rating', { title: strMovie, rating: strRating });
+        });
+    })(jQuery)
+
+</script>
+</body>
+</html>

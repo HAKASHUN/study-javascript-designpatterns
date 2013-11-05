@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<form id="flickerSearch">
+    <input type="text" name="tag" id="query"/>
+    <input type="submit" name="submit" value="submit">
+</form>
+
+<div id="lastQuery"></div>
+<div id="searchResults"></div>
+
+<script id="resultTemplate" type="text/html">
+    <% _.each(items, function(item){ %>
+      <li><p><img src="<%= item.media.m %>"/></p></li>
+    <%});%>
+</script>
+
+
+<script src="../../bower_components/jquery/jquery.js"></script>
+<script src="../../bower_components/underscore/underscore.js"></script>
+<script>
+
+    /* jQuery Tiny Pub/Sub - v0.7 - 10/27/2011
+     * http://benalman.com/
+     * https://gist.github.com/cowboy/661855
+     * Copyright (c) 2011 "Cowboy" Ben Alman; Licensed MIT, GPL */
+
+    (function($) {
+
+        var o = $({});
+
+        $.subscribe = function() {
+            o.on.apply(o, arguments);
+        };
+
+        $.unsubscribe = function() {
+            o.off.apply(o, arguments);
+        };
+
+        $.publish = function() {
+            o.trigger.apply(o, arguments);
+        };
+
+    }(jQuery));
+
+    //Here we go!
+    (function($){
+        var resultTemplate = _.template($('#resultTemplate').html());
+        $.subscribe('/search/tags', function(e, tags) {
+            $('#searchResults').html("Searched for:" + tags + "");
+        });
+        $.subscribe('/search/resultSet', function(e, results){
+            $('#searchResults').append(resultTemplate(results));
+//            $('#saerchResults').append();
+        });
+        $('#flickerSearch').submit(function(e) {
+            e.preventDefault();
+            var tags = $(this).find('#query').val();
+            if(!tags) {
+                return;
+            }
+            $.publish('/search/tags', [$.trim(tags)]);
+        });
+
+        $.subscribe('/search/tags', function(e, tags){
+            $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?", {
+                tags: tags,
+                tagmode: 'any',
+                format: 'json'
+            }, function(data) {
+                if(!data.items.length) {
+                    return;
+                }
+                $.publish('/search/resultSet', data);
+            })
+        })
+    })(jQuery)
+
+</script>
+</body>
+</html>
