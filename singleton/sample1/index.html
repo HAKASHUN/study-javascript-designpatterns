@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    var mySingleton = (function(){
+
+        //private
+        var instance;
+
+        //シングルトンクラスの実本体
+        function init(){
+            function privateMethod() {
+                console.log('I\'m private.');
+            }
+
+            return {
+                publicMethod: function() {
+                    console.log('The public can see me!');
+                },
+                publicProperty: "I am also public"
+            }
+        };
+
+        return {
+            //public
+            getInstance: function() {
+                if(!instance) {
+                    instance = init();
+                }
+                return instance;
+            }
+        }
+    })();
+
+    var singleA = mySingleton.getInstance();
+    var singleB = mySingleton.getInstance();
+
+    console.log(singleA === singleB);
+</script>
+</body>
+</html>
