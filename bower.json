@@ -1,0 +1,21 @@
+{
+  "name": "study-javascript-designpatterns",
+  "version": "0.0.0",
+  "homepage": "https://github.com/HAKASHUN/study-javascript-designpatterns",
+  "authors": [
+    "Shunsuke Hakamata <hakashun@hakashun.net>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.0.3",
+    "underscore": "~1.5.2",
+    "dojo": "~1.9.1"
+  }
+}

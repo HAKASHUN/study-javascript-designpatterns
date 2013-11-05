@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    //モジュール
+    var basketModule = (function(){
+        //プライベート
+        var basket = [];
+
+        function doSomethingPrivate() {
+            console.log('[private] doSomethingPrivate');
+        }
+
+        function doSomethingElsePrivate() {
+            console.log('[private] doSomethingElsePrivate');
+        }
+
+        //パブリック
+        return {
+            addItem: function(values) {
+                basket.push(values);
+            },
+            getItemCount: function() {
+                return basket.length;
+            },
+            //プライベートクラスをpublic化
+            doSomething: doSomethingPrivate,
+
+            getTotal: function() {
+                var itemCount = this.getItemCount();
+                var total = 0;
+
+                while(itemCount--) {
+                    total += basket[itemCount].price;
+                }
+
+                return total;
+            }
+        }
+
+
+    })();
+
+    //パブリック化したプライベート関数を実行
+    basketModule.doSomething();
+
+    basketModule.addItem({'name': 'みかん', price: 80});
+    basketModule.addItem({'name': 'もも', price: 180});
+
+    console.log(basketModule.getItemCount());
+
+    console.log(basketModule.getTotal());
+
+    //プライベート変数 basketは、
+    //外部からは一切アクセスできない。
+    console.log(basketModule.basket);//Undefined
+    console.log(basket);//Error
+
+</script>
+</body>
+</html>

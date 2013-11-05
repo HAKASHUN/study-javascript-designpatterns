@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    var myModule = (function (){
+        var module = {};
+        var privateVariable = 'Hello World!';
+
+        function privateMethod() {
+
+        }
+
+        module.publicProperty = 'Foobar';
+        module.publicMethod = function() {
+            console.log( privateVariable );
+        };
+
+        return module;
+
+    })();
+
+    myModule.publicMethod();
+    console.log(myModule.publicProperty);
+</script>
+</body>
+</html>

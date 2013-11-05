@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    //モジュール
+    var myNamespace = (function(){
+        //プライベート
+        var myPrivateVar = 0;
+        var myPrivateMethod = function(foo) {
+            console.log(foo);
+        };
+
+        return {
+            //パブリック
+            myPublicVar: 'foo',
+            myPublicFunction: function(bar) {
+                myPrivateVar++;
+                myPrivateMethod(bar);
+            }
+        }
+    })();
+
+    myNamespace.myPublicFunction('HAKASHUN');
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<div class="container">
+
+</div>
+<script src="../../bower_components/jquery/jquery.js"></script>
+<script src="../../bower_components/underscore/underscore.js"></script>
+<script>
+    //jQueryと_を引数として渡す。
+    var myModule = (function($, _){
+        function privateMethod1() {
+            $('.container').html('test');
+        }
+
+        function privateMethod2() {
+            console.log(_.min([10, 5, 100, 2, 1000]));
+        }
+
+        return {
+            publicMethod: function() {
+                privateMethod1();
+                privateMethod2();
+            }
+        }
+    })(jQuery, _);
+
+    myModule.publicMethod();
+</script>
+</body>
+</html>

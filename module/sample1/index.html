@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    //モジュール
+    var myModule = {
+        myProperty: 'someValue',
+        myConfig: {
+            useCaching: true,
+            language: 'en'
+        },
+        myMethod: function() {
+            console.log('Where in the world is Paul Irish today?');
+        },
+        myMethod2: function() {
+            console.log('Chaching is:' + ( this.myConfig.useCaching ) ? 'enabled' : 'disabled');
+        },
+        myMethod3: function(newConfig) {
+            if(typeof newConfig === 'object') {
+                this.myConfig = newConfig;
+                console.log( this.myConfig.language );
+            }
+        }
+    };
+
+    myModule.myMethod();
+    myModule.myMethod2();
+    myModule.myMethod3({
+        language: 'fr',
+        useCaching: false
+    });
+</script>
+</body>
+</html>
