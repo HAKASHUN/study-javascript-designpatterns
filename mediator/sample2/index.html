@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    (function(root){
+        function guideGenerator() {}
+
+        /**
+         * Subscriber ex: on
+         * @param fn        実行関数
+         * @param options   オプション
+         * @param context   関数に渡すコンテキスト
+         * @constructor
+         */
+        function Subscriber(fn, options, context) {
+            if(!this instanceof Subscriber) {
+                return new Subscriber(fn, options, context);
+            } else {
+                this.id = guideGenerator();
+                this.fn = fn;
+                this.options = options;
+                this.context = context;
+                this.topic = null;
+            }
+        }
+
+        /**
+         * Topic
+         * @param namespace
+         * @constructor
+         */
+        function Topic(namespace) {
+            if(!this instanceof Topic) {
+                return new Topic(namespace);
+            } else {
+                this.namespace = namespace || "";
+                this._callbacks = [];
+                this._topics = [];
+                this.stopped = false;
+            }
+        }
+        Topic.prototype = {
+            AddSubscriber: function(fn, options, context) {
+                var callback = new Subscriber(fn, options, context);
+                this._callbacks.push(callback);
+                callback.topic = this;
+
+                return callback;
+            },
+            StopPropagation: function() {
+                this.stopped = true;
+            }
+        };
+
+
+
+
+    })()
+</script>
+</body>
+</html>
