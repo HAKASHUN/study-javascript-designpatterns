@@ -5,61 +5,56 @@
     <title>Study</title>
 </head>
 <body>
+<h1>Chat</h1>
+<form id="chatForm">
+    <label for="fromBox">Your Name:</label>
+    <input id="fromBox" type="text" />
+    <br />
+    <label for="toBox">Send to:</label>
+    <input id="toBox" type="text" />
+    <br />
+    <label for="chatBox">Message:</label>
+    <input id="chatBox" type="text" />
+    <button action="submit">Chat</button>
+</form>
+<div id="chatResult"></div>
+<script src="../../bower_components/jquery/jquery.js"></script>
+<script src="mediator.js"></script>
 <script>
-    (function(root){
-        function guideGenerator() {}
+    var mediator = new Mediator();
+    $('#chatForm').on('submit', function(e){
+        e.preventDefault();
 
-        /**
-         * Subscriber ex: on
-         * @param fn        実行関数
-         * @param options   オプション
-         * @param context   関数に渡すコンテキスト
-         * @constructor
-         */
-        function Subscriber(fn, options, context) {
-            if(!this instanceof Subscriber) {
-                return new Subscriber(fn, options, context);
-            } else {
-                this.id = guideGenerator();
-                this.fn = fn;
-                this.options = options;
-                this.context = context;
-                this.topic = null;
-            }
+        var text = $('#chatBox').val();
+        var from = $('#fromBox').val();
+        var to = $('#toBox').val();
+
+        mediator.publish('newMessage', {message: text, from: from, to: to});
+    });
+
+    function displayChat(data) {
+        var date = new Date();
+        var msg = data.from + ' said ' + data.message + ' to ' + data.to;
+        $('#chatResult').prepend('' + msg + '(' + date.toLocaleTimeString() + ')');
+    }
+
+    function logChat(data) {
+        if(window.console) {
+            console.log(data);
         }
+    }
 
-        /**
-         * Topic
-         * @param namespace
-         * @constructor
-         */
-        function Topic(namespace) {
-            if(!this instanceof Topic) {
-                return new Topic(namespace);
-            } else {
-                this.namespace = namespace || "";
-                this._callbacks = [];
-                this._topics = [];
-                this.stopped = false;
-            }
-        }
-        Topic.prototype = {
-            AddSubscriber: function(fn, options, context) {
-                var callback = new Subscriber(fn, options, context);
-                this._callbacks.push(callback);
-                callback.topic = this;
+    mediator.subscribe('newMessage', displayChat);
+    mediator.subscribe('newMessage', logChat);
 
-                return callback;
-            },
-            StopPropagation: function() {
-                this.stopped = true;
-            }
-        };
+//    function amITalkingToMyself(data) {
+//        return data.from === data.to;
+//    }
+//    function iAmClearlyCrazy(data) {
+//        $('#chatResult').prepend('' + data.from + ' is talking to himself.');
+//    }
+//    mediator.Subscribe(amITalkingToMyself, iAmClearlyCrazy);
 
-
-
-
-    })()
 </script>
 </body>
 </html>

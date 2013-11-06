@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    var myCar = {
+        name: 'Ford Escort',
+
+        drive: function() {
+            console.log('Weeee. I\'m driving!');
+        },
+
+        panic: function() {
+            console.log('Wait. How do you stop this thing?');
+        }
+    };
+
+    var yourCar = Object.create(myCar);
+    console.log(yourCar.name);
+</script>
+</body>
+</html>

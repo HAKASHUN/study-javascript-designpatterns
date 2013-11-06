@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    (function(){
+        var CarManager = {
+            //情報を要求する
+            requestInfo: function(model, id) {
+                return "The information for " + model + " with ID " + id + " is foobar.";
+            },
+
+            //車を買う
+            buyVehicle: function(model, id) {
+                return "You have successfully purchased Item " + id + ", a " + model;
+            },
+
+            //車を見るための手配をする
+            arrangeViewing: function(model, id) {
+                return "You have successfully booked a viewing of " + model + " (" + id + ")";
+            },
+
+            //コマンドパターン 上記のメソッドは必ずここから呼び出される。
+            execute: function(name) {
+                return CarManager[name] && CarManager[name].apply(CarManager, [].slice.call(arguments, 1));
+            }
+        };
+        var info = CarManager.execute('requestInfo', 'Ferrari', '12345');
+        console.log(info)
+    })();
+</script>
+</body>
+</html>

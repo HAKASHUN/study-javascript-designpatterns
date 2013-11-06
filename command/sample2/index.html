@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Study</title>
+</head>
+<body>
+<script>
+    (function(){
+
+        var EnableAlarm = function(alarm) {
+            this.alarm = alarm;
+        };
+        EnableAlarm.prototype.execute = function() {
+            this.alarm.enable();
+        };
+
+        var DisableAlarm = function(alarm) {
+            this.alarm = alarm;
+        };
+
+        DisableAlarm.prototype.execute = function() {
+            this.alarm.disable();
+        };
+
+        var SetAlarm = function(alarm) {
+            this.alarm = alarm;
+        };
+        SetAlarm.prototype.execute = function() {
+            this.alarm.set();
+        };
+
+        var alarms = [];
+
+        for(var i = 0; i < alarms.length; i++) {
+            var enable_alarm = new EnableAlarm(alarms[i]);
+            var disable_alarm = new DisableAlarm(alarms[i]);
+            var set_alarm = new SetAlarm(alarms[i]);
+        }
+
+        new Button('Enable', enable_alarm);
+        new Button('Disable', disable_alarm);
+        new Button('Set', set_alarm);
+
+    })();
+</script>
+</body>
+</html>
